@@ -17,7 +17,6 @@
       position: relative;
     }
 
-    /* 霧化背景動畫 */
     body::before {
       content: "";
       position: absolute;
@@ -48,6 +47,7 @@
       white-space: pre-line;
       min-height: 200px;
       overflow-wrap: break-word;
+      text-align: center;
     }
 
     #output {
@@ -55,6 +55,7 @@
       letter-spacing: 0.05em;
       text-shadow: 0 0 5px #ff9ad5;
       user-select: none;
+      text-align: left;
     }
 
     .cursor {
@@ -94,11 +95,33 @@
       50%  { transform: translateY(-30px); }
       100% { transform: translateY(0); }
     }
+
+    /* 🔘 進入任務按鈕 */
+    #enterBtn {
+      margin-top: 2rem;
+      padding: 0.8rem 1.6rem;
+      font-size: 1rem;
+      font-family: 'Fira Code', monospace;
+      color: #fff;
+      background: #ff4d9b;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 0 10px #ff4d9b;
+      display: none;
+      transition: transform 0.2s;
+    }
+
+    #enterBtn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px #ff4d9b;
+    }
   </style>
 </head>
 <body>
   <div class="terminal">
     <div id="output"></div><span class="cursor"></span>
+    <button id="enterBtn" onclick="window.location.href='level1.html'">▶ 進入任務</button>
   </div>
   <div class="melon" title="🍈 神秘哈密瓜"></div>
 
@@ -109,10 +132,11 @@
       "身份驗證中... 請稍候",
       "系統授權完成。",
       "提示：look_deep",
-      ">> 任務啟動中..."
+      ">> 任務啟動準備完成。"
     ];
 
     const output = document.getElementById("output");
+    const btn = document.getElementById("enterBtn");
     let i = 0, j = 0;
     const speed = 50;
 
@@ -129,9 +153,8 @@
           setTimeout(typeLine, 600);
         }
       } else {
-        setTimeout(() => {
-          window.location.href = "level1.html";
-        }, 2000);
+        // 顯示按鈕
+        btn.style.display = "inline-block";
       }
     }
 
