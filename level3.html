@@ -1,19 +1,95 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
-<head><meta charset="UTF-8"><title>第三關</title></head>
+<head>
+  <meta charset="UTF-8">
+  <title>第三關</title>
+  <style>
+    body {
+      background-color: #0d1117;
+      color: #c9d1d9;
+      font-family: 'Fira Code', monospace;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 3rem;
+      min-height: 100vh;
+    }
+
+    h2 {
+      color: #58a6ff;
+      text-shadow: 0 0 5px #58a6ff88;
+    }
+
+    input {
+      margin-top: 1rem;
+      background-color: #0d1117;
+      border: 1px solid #30363d;
+      color: #f0f6fc;
+      padding: 0.6rem;
+      border-radius: 6px;
+      width: 300px;
+      font-size: 1rem;
+    }
+
+    button {
+      margin-top: 1rem;
+      background-color: #238636;
+      border: none;
+      color: white;
+      padding: 0.5rem 1rem;
+      font-weight: bold;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #2ea043;
+    }
+
+    #msg {
+      margin-top: 1rem;
+      color: #f85149;
+    }
+
+    /* ✅ 成功動畫區塊 */
+    .unlock-animation {
+      display: none;
+      margin-top: 2rem;
+      font-size: 1.5rem;
+      color: #3fb950;
+      animation: flicker 1.5s infinite alternate;
+    }
+
+    @keyframes flicker {
+      0% { opacity: 0.2; text-shadow: 0 0 5px #3fb950; }
+      100% { opacity: 1; text-shadow: 0 0 20px #3fb950, 0 0 30px #3fb950; }
+    }
+  </style>
+</head>
 <body>
   <h2>第三關：最後一關</h2>
   <p>請輸入旗標密碼：</p>
-  <input type="password" id="final" />
+  <input type="password" id="final" placeholder="輸入 FLAG..." />
   <button onclick="check()">送出</button>
   <p id="msg"></p>
+
+  <div id="unlock" class="unlock-animation">✅ 驗證成功！正在傳送...</div>
+
   <script>
     function check() {
       const input = document.getElementById("final").value;
       if (input === "FLAG{you_did_it}") {
-        window.location.href = "win.html";
+        document.getElementById("msg").innerText = "";
+        document.getElementById("unlock").style.display = "block";
+
+        // 等 2 秒後跳轉
+        setTimeout(() => {
+          window.location.href = "win.html";
+        }, 2000);
       } else {
         document.getElementById("msg").innerText = "錯誤的 FLAG！";
+        document.getElementById("unlock").style.display = "none";
       }
     }
   </script>
