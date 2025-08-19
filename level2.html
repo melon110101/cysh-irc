@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>第二關：解碼</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Fira+Code&display=swap');
@@ -108,19 +108,22 @@
     <pre title="...真的不是 Base64 嗎？">bWVsb24gaXMgZGVsaWNpb3Vz</pre>
 
     <input type="text" id="answer" placeholder="輸入解碼結果..." />
-    <br>
+    <br />
     <button onclick="check()">下一步</button>
     <p id="msg"></p>
   </div>
 
   <script>
     async function check() {
-      const input = document.getElementById("answer").value.trim().toLowerCase();
+      const input = document.getElementById("answer").value.trim();
+      // console.log("User input:", input);
+
       const encoder = new TextEncoder();
       const data = encoder.encode(input);
       const hashBuffer = await crypto.subtle.digest('SHA-256', data);
       const hashArray = Array.from(new Uint8Array(hashBuffer));
       const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+      // console.log("Hash:", hashHex);
 
       const correctHash = "317ee1b5b8faebfd1e2f1a3dd53cf398d589c228d8a5bda489c2f7c0df09d495";
 
