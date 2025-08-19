@@ -2,47 +2,76 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8" />
-  <title>CTF 黑客入口</title>
+  <title>粉紅神秘駭客入口</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fira+Code&display=swap');
+
     body {
-      background-color: #000;
-      color: #00ff00;
-      font-family: 'Courier New', Courier, monospace;
-      font-size: 1.2rem;
-      margin: 0;
-      padding: 2rem;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      margin: 0; padding: 2rem;
       height: 100vh;
+      display: flex; justify-content: center; align-items: center;
+      background: linear-gradient(135deg, #2a003f, #ff4d9b);
+      font-family: 'Fira Code', monospace;
+      color: #ff9ad5;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* 漸層閃爍背景動畫 */
+    body::before {
+      content: "";
+      position: absolute;
+      top: -50%; left: -50%;
+      width: 200%; height: 200%;
+      background: radial-gradient(circle at center, #ff4d9b, #2a003f 70%);
+      animation: pulseBg 6s ease-in-out infinite alternate;
+      z-index: 0;
+      filter: blur(80px);
+      opacity: 0.7;
+    }
+
+    @keyframes pulseBg {
+      0% { transform: scale(1) rotate(0deg); opacity: 0.7;}
+      100% { transform: scale(1.1) rotate(10deg); opacity: 0.9;}
     }
 
     .terminal {
+      position: relative;
+      z-index: 1;
+      background: rgba(40, 0, 60, 0.9);
+      border: 2px solid #ff4d9b;
+      box-shadow: 0 0 25px #ff4d9b;
+      border-radius: 12px;
+      padding: 2rem;
       max-width: 600px;
       width: 100%;
-      background: #000;
-      padding: 2rem;
-      border: 1px solid #00ff00;
-      box-shadow: 0 0 15px #00ff00;
+      white-space: pre-line;
+      min-height: 200px;
+      overflow-wrap: break-word;
     }
 
     #output {
-      white-space: pre-line;
-      min-height: 200px;
+      line-height: 1.5;
+      letter-spacing: 0.05em;
+      text-shadow: 0 0 5px #ff9ad5;
+      user-select: none;
     }
 
     .cursor {
       display: inline-block;
-      width: 10px;
-      background-color: #00ff00;
-      animation: blink 0.8s infinite;
-      margin-left: 3px;
+      width: 14px;
+      height: 28px;
+      background-color: #ff4d9b;
+      border-radius: 3px;
+      filter: drop-shadow(0 0 6px #ff4d9b);
+      animation: blink 1s steps(2, start) infinite;
+      vertical-align: bottom;
+      margin-left: 6px;
     }
 
     @keyframes blink {
-      0% { opacity: 1; }
-      50% { opacity: 0; }
-      100% { opacity: 1; }
+      0%, 50% { opacity: 1; }
+      51%, 100% { opacity: 0; }
     }
   </style>
 </head>
@@ -53,18 +82,17 @@
 
   <script>
     const lines = [
-      "載入系統模組...",
-      "連線到 CTF 挑戰主機 [OK]",
-      "驗證玩家身份中...",
-      "訪問入口許可已授權。",
+      "初始化神秘任務...",
+      "正在連接秘密伺服器...",
+      "身份驗證中... 請稍候",
+      "系統授權完成。",
       "提示：look_deep",
-      ">> 正在開啟任務..."
+      ">> 任務啟動中..."
     ];
 
-    let i = 0;
-    let j = 0;
-    const speed = 50;
     const output = document.getElementById("output");
+    let i = 0, j = 0;
+    const speed = 50;
 
     function typeLine() {
       if (i < lines.length) {
@@ -76,12 +104,12 @@
           output.innerHTML += "\n";
           i++;
           j = 0;
-          setTimeout(typeLine, 500);
+          setTimeout(typeLine, 600);
         }
       } else {
         setTimeout(() => {
           window.location.href = "level1.html";
-        }, 2000); // 兩秒後自動進入第一關
+        }, 2000);
       }
     }
 
