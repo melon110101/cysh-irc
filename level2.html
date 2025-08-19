@@ -1,0 +1,22 @@
+!DOCTYPE html>
+<html lang="zh-Hant">
+<head><meta charset="UTF-8"><title>第二關</title></head>
+<body>
+  <h2>第二關：解開這串訊息</h2>
+  <p>請將以下 Base64 編碼解出來：</p>
+  <pre>c2VjcmV0X3Bhc3N3b3Jk</pre>
+  <input type="text" id="answer" placeholder="輸入解碼結果" />
+  <button onclick="check()">下一步</button>
+  <p id="msg"></p>
+  <script>
+    function check() {
+      const input = document.getElementById("answer").value;
+      if (input === "secret_password") {
+        window.location.href = "level3.html";
+      } else {
+        document.getElementById("msg").innerText = "錯誤，請再試一次！";
+      }
+    }
+  </script>
+</body>
+</html>
