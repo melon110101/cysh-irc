@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head><meta charset="UTF-8"><title>第一關</title></head>
+<body>
+  <h2>第一關：密碼藏起來了！</h2>
+  <p>請輸入正確密碼才能進入下一關：</p>
+  <input type="text" id="password" placeholder="輸入密碼" />
+  <button onclick="check()">提交</button>
+  <p id="msg"></p>
+  <script>
+    function check() {
+      const input = document.getElementById("password").value;
+      if (input === "look_deep") {
+        window.location.href = "level2.html";
+      } else {
+        document.getElementById("msg").innerText = "密碼錯誤，請再試一次！";
+      }
+    }
+  </script>
+  <!-- 密碼是：look_deep -->
+</body>
+</html>
