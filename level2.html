@@ -1,6 +1,62 @@
-!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-Hant">
-<head><meta charset="UTF-8"><title>第二關</title></head>
+<head>
+  <meta charset="UTF-8">
+  <title>第二關</title>
+  <style>
+    body {
+      background-color: #0d1117;
+      color: #c9d1d9;
+      font-family: 'Fira Code', monospace;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 3rem;
+      min-height: 100vh;
+    }
+    h2 {
+      color: #58a6ff;
+      text-shadow: 0 0 5px #58a6ff88;
+    }
+    pre {
+      background: #161b22;
+      padding: 1rem;
+      border-radius: 6px;
+      border: 1px solid #30363d;
+      color: #f0f6fc;
+      font-size: 1.1rem;
+      user-select: all;
+    }
+    input {
+      margin-top: 1rem;
+      background-color: #0d1117;
+      border: 1px solid #30363d;
+      color: #f0f6fc;
+      padding: 0.6rem;
+      border-radius: 6px;
+      width: 300px;
+      font-size: 1rem;
+    }
+    button {
+      margin-top: 1rem;
+      background-color: #238636;
+      border: none;
+      color: white;
+      padding: 0.5rem 1rem;
+      font-weight: bold;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    button:hover {
+      background-color: #2ea043;
+    }
+    #msg {
+      margin-top: 1rem;
+      color: #f85149;
+    }
+  </style>
+</head>
 <body>
   <h2>第二關：解開這串訊息</h2>
   <p>請將以下 Base64 編碼解出來：</p>
