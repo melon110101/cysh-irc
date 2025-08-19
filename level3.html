@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head><meta charset="UTF-8"><title>第三關</title></head>
+<body>
+  <h2>第三關：最後一關</h2>
+  <p>請輸入旗標密碼：</p>
+  <input type="password" id="final" />
+  <button onclick="check()">送出</button>
+  <p id="msg"></p>
+  <script>
+    function check() {
+      const input = document.getElementById("final").value;
+      if (input === "FLAG{you_did_it}") {
+        window.location.href = "win.html";
+      } else {
+        document.getElementById("msg").innerText = "錯誤的 FLAG！";
+      }
+    }
+  </script>
+</body>
+</html>
