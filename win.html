@@ -1,9 +1,71 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
-<head><meta charset="UTF-8"><title>恭喜通關！</title></head>
+<head>
+  <meta charset="UTF-8" />
+  <title>🎉 通關成功</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: #000;
+      color: #00ff00;
+      font-family: 'Courier New', Courier, monospace;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+      animation: glow 2s ease-in-out infinite alternate;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00;
+      animation: flicker 1s infinite alternate;
+    }
+
+    .flag {
+      margin-top: 1.5rem;
+      font-size: 1.2rem;
+      background: #111;
+      padding: 1rem 2rem;
+      border: 1px solid #00ff00;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #00ff00;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes glow {
+      from { background-color: #000; }
+      to { background-color: #001f00; }
+    }
+
+    @keyframes flicker {
+      0% { opacity: 1; text-shadow: 0 0 2px #00ff00; }
+      100% { opacity: 0.7; text-shadow: 0 0 20px #00ff00; }
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 10px #00ff00; }
+      100% { box-shadow: 0 0 25px #00ff00; }
+    }
+
+    .matrix-bg {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      background: url('https://media.giphy.com/media/xUA7b8xC5C3yXkZ2rK/giphy.gif');
+      background-size: cover;
+      opacity: 0.06;
+      z-index: -1;
+    }
+  </style>
+</head>
 <body>
-  <h1>🎉 恭喜你成功通關！</h1>
-  <p>你的 FLAG 是：</p>
-  <pre>FLAG{you_did_it}</pre>
+  <div class="matrix-bg"></div>
+  <h1>✅ 驗證成功</h1>
+  <div class="flag">你的 FLAG 是：<br><strong>FLAG{you_did_it}</strong></div>
 </body>
 </html>
