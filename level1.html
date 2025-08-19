@@ -1,70 +1,115 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
-<head><meta charset="UTF-8"><title>第一關</title><style>
-  body {
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    color: #fff;
-    margin: 0; padding: 2rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-height: 100vh;
-  }
-  h1, h2 {
-    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-  }
-  input[type="text"], input[type="password"] {
-    padding: 0.5rem;
-    border-radius: 6px;
-    border: none;
-    width: 250px;
-    font-size: 1rem;
-    margin-top: 1rem;
-  }
-  button {
-    margin-top: 1rem;
-    padding: 0.5rem 1rem;
-    border: none;
-    border-radius: 6px;
-    background-color: #ff6f61;
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    transition: background-color 0.3s ease;
-  }
-  button:hover {
-    background-color: #e04e3c;
-  }
-  p, pre {
-    margin-top: 1rem;
-    font-size: 1.1rem;
-  }
-  a {
-    color: #ffd369;
-    text-decoration: none;
-  }
-  a:hover {
-    text-decoration: underline;
-  }
-</style></head>
+<head>
+  <meta charset="UTF-8" />
+  <title>第一關：找密碼(千萬別開F12)</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fira+Code&display=swap');
+
+    body {
+      margin: 0; padding: 2rem;
+      height: 100vh;
+      display: flex; justify-content: center; align-items: center;
+      background: linear-gradient(135deg, #2a003f, #ff4d9b);
+      font-family: 'Fira Code', monospace;
+      color: #ff9ad5;
+      overflow: hidden;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: absolute;
+      top: -50%; left: -50%;
+      width: 200%; height: 200%;
+      background: radial-gradient(circle at center, #ff4d9b, #2a003f 70%);
+      animation: pulseBg 6s ease-in-out infinite alternate;
+      z-index: 0;
+      filter: blur(80px);
+      opacity: 0.7;
+    }
+
+    @keyframes pulseBg {
+      0% { transform: scale(1) rotate(0deg); opacity: 0.7; }
+      100% { transform: scale(1.1) rotate(10deg); opacity: 0.9; }
+    }
+
+    .terminal {
+      position: relative;
+      z-index: 1;
+      background: rgba(40, 0, 60, 0.95);
+      border: 2px solid #ff4d9b;
+      box-shadow: 0 0 25px #ff4d9b;
+      border-radius: 12px;
+      padding: 2rem;
+      max-width: 600px;
+      width: 100%;
+      text-align: center;
+    }
+
+    h2 {
+      color: #fff;
+      text-shadow: 0 0 10px #ff9ad5;
+    }
+
+    input[type="text"] {
+      padding: 0.5rem;
+      border-radius: 6px;
+      border: none;
+      width: 250px;
+      font-size: 1rem;
+      font-family: 'Fira Code', monospace;
+      margin-top: 1rem;
+      background-color: #2a003f;
+      color: #ff9ad5;
+      box-shadow: inset 0 0 5px #ff4d9b;
+    }
+
+    button {
+      margin-top: 1rem;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 6px;
+      background-color: #ff4d9b;
+      color: white;
+      font-weight: bold;
+      font-family: 'Fira Code', monospace;
+      cursor: pointer;
+      box-shadow: 0 0 10px #ff4d9b;
+      transition: transform 0.2s;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px #ff4d9b;
+    }
+
+    #msg {
+      margin-top: 1rem;
+      font-size: 1rem;
+      color: #ffd6ef;
+    }
+  </style>
+</head>
 <body>
-  <h2>第一關：密碼藏起來了！</h2>
-  <p>請輸入正確密碼才能進入下一關：</p>
-  <input type="text" id="password" placeholder="輸入密碼" />
-  <button onclick="check()">提交</button>
-  <p id="msg"></p>
+  <div class="terminal">
+    <h2>第一關：密碼挑戰</h2>
+    <p>請輸入正確密碼才能進入下一關：</p>
+    <input type="text" id="password" placeholder="輸入密碼" />
+    <br />
+    <button onclick="check()">提交</button>
+    <p id="msg"></p>
+  </div>
+
   <script>
     function check() {
-      const input = document.getElementById("password").value;
-      if (input === "look_deep") {
+      const input = document.getElementById("password").value.trim();
+      if (input === "sweet_melon阿不是說不要點開了嗎") {
         window.location.href = "level2.html";
       } else {
-        document.getElementById("msg").innerText = "密碼錯誤，請再試一次！";
+        document.getElementById("msg").innerText = "❌ 密碼錯誤，請再試一次！";
       }
     }
   </script>
-  <!-- 密碼是：look_deep -->
 </body>
 </html>
