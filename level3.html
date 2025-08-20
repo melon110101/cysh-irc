@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8" />
-  <title>第二關：解碼</title>
+  <meta charset="UTF-8">
+  <title>第三關：最後一關</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Fira+Code&display=swap');
 
@@ -52,17 +52,6 @@
       text-shadow: 0 0 10px #ff9ad5;
     }
 
-    pre {
-      background: #1a001f;
-      padding: 1rem;
-      border-radius: 6px;
-      border: 1px solid #ff4d9b;
-      color: #ffb3dc;
-      font-size: 1.1rem;
-      user-select: all;
-      box-shadow: inset 0 0 10px #ff4d9b44;
-    }
-
     input {
       margin-top: 1rem;
       background-color: #2a003f;
@@ -99,30 +88,46 @@
       color: #ffd6ef;
       font-weight: bold;
     }
+
+    .unlock-animation {
+      display: none;
+      margin-top: 2rem;
+      font-size: 1.5rem;
+      color: #3fb950;
+      animation: flicker 1.5s infinite alternate;
+    }
+
+    @keyframes flicker {
+      0% { opacity: 0.2; text-shadow: 0 0 5px #3fb950; }
+      100% { opacity: 1; text-shadow: 0 0 20px #3fb950, 0 0 30px #3fb950; }
+    }
   </style>
 </head>
 <body>
   <div class="terminal">
-    <h2>第二關：解開這串訊息</h2>
-    <p>我絕對不會告訴你這是 Base64 編碼：</p>
-    <pre title="...真的不是 Base64 嗎？">bWVsb24gaXMgZGVsaWNpb3Vz</pre>
-
-    <input type="text" id="answer" placeholder="輸入解碼結果..." />
+    <h2>第三關：最後一關</h2>
+    <p>請輸入旗標密碼：</p>
+    <input type="password" id="final" placeholder="輸入 FLAG..." />
     <br />
-    <button onclick="check()">下一步</button>
+    <button onclick="check()">送出</button>
     <p id="msg"></p>
+
+    <div id="unlock" class="unlock-animation">✅ 驗證成功！正在傳送...</div>
   </div>
 
   <script>
     function check() {
-      const input = document.getElementById("answer").value.trim();
-      const correctAnswer = "melon is delicious";
+      const input = document.getElementById("final").value.trim();
+      if (input === "FLAG{you_did_it}") {
+        document.getElementById("msg").innerText = "";
+        document.getElementById("unlock").style.display = "block";
 
-      if (input === correctAnswer) {
-        window.location.href = "level3.html";
+        setTimeout(() => {
+          window.location.href = "win.html";
+        }, 2000);
       } else {
         const msg = document.getElementById("msg");
-        msg.innerText = "❌ 傻鳥一隻！";
+        msg.innerText = "❌ 錯誤的 FLAG！";
         msg.style.color = "#ff4d9b";
       }
     }
