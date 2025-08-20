@@ -114,27 +114,16 @@
   </div>
 
   <script>
-    async function check() {
+    function check() {
       const input = document.getElementById("answer").value.trim();
-      // console.log("User input:", input);
+      const correctAnswer = "melon is delicious";
 
-      const encoder = new TextEncoder();
-      const data = encoder.encode(input);
-      const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-      const hashArray = Array.from(new Uint8Array(hashBuffer));
-      const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-      // console.log("Hash:", hashHex);
-
-      const correctHash = "317ee1b5b8faebfd1e2f1a3dd53cf398d589c228d8a5bda489c2f7c0df09d495";
-
-      if (hashHex === correctHash) {
+      if (input === correctAnswer) {
         window.location.href = "level3.html";
       } else {
         const msg = document.getElementById("msg");
         msg.innerText = "❌ 傻鳥一隻！";
         msg.style.color = "#ff4d9b";
-        msg.classList.add("shake");
-        setTimeout(() => msg.classList.remove("shake"), 300);
       }
     }
   </script>
