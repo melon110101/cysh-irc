@@ -107,7 +107,7 @@
   <div class="terminal">
     <h2>第三關：最後一關嗎?</h2>
     <p>請輸入旗標密碼：</p>
-    <input type="password" id="final" placeholder="輸入 FLAG..." />
+    <input type="text" id="final" placeholder="輸入 FLAG..." />
     <br />
     <button onclick="check()">送出</button>
     <p id="msg"></p>
@@ -118,7 +118,7 @@
   <script>
     function check() {
       const input = document.getElementById("final").value.trim();
-      if (input === "FLAG{you_did_it}") {
+      if (input === "FLAG{社長是憨兒}") {
         document.getElementById("msg").innerText = "";
         document.getElementById("unlock").style.display = "block";
 
