@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>第四關：SSTI 模擬挑戰</title>
+  <style>
+    body {
+      margin: 0; padding: 2rem;
+      height: 100vh;
+      display: flex; justify-content: center; align-items: center;
+      background: linear-gradient(135deg, #2a003f, #ff4d9b);
+      font-family: 'Fira Code', monospace;
+      color: #ff9ad5;
+    }
+
+    .terminal {
+      background: rgba(40, 0, 60, 0.95);
+      border: 2px solid #ff4d9b;
+      box-shadow: 0 0 25px #ff4d9b;
+      border-radius: 12px;
+      padding: 2rem;
+      max-width: 650px;
+      width: 100%;
+      text-align: center;
+    }
+
+    h2 { color: #fff; text-shadow: 0 0 10px #ff9ad5; }
+
+    pre {
+      background: #1a001f;
+      padding: 1rem;
+      border-radius: 6px;
+      border: 1px solid #ff4d9b;
+      color: #ffb3dc;
+      font-size: 1.1rem;
+      user-select: all;
+      text-align: left;
+    }
+
+    input {
+      margin-top: 1rem;
+      background-color: #2a003f;
+      border: 1px solid #ff4d9b;
+      color: #fff;
+      padding: 0.6rem;
+      border-radius: 6px;
+      width: 320px;
+      font-size: 1rem;
+    }
+
+    button {
+      margin-top: 1rem;
+      background-color: #ff4d9b;
+      border: none;
+      color: white;
+      padding: 0.5rem 1rem;
+      font-weight: bold;
+      border-radius: 6px;
+      cursor: pointer;
+      box-shadow: 0 0 10px #ff4d9b;
+      transition: transform 0.2s;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px #ff4d9b;
+    }
+
+    #msg { margin-top: 1rem; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <div class="terminal">
+    <h2>第四關：SSTI 模擬挑戰</h2>
+    <p>某個系統用了 Jinja2 模板，現在輸入被渲染在這裡：</p>
+    <pre>Hello, {{ input }}</pre>
+    <p>你能透過 <strong>SSTI 注入</strong> 取得 FLAG 嗎？</p>
+
+    <input type="text" id="answer" placeholder="輸入 Payload..." />
+    <br />
+    <button onclick="check()">送出</button>
+    <p id="msg"></p>
+  </div>
+
+  <script>
+    function check() {
+      const input = document.getElementById("answer").value.trim();
+      // 模擬 payload -> FLAG
+      if (input === "{{7*7}}" || input === "{{ 7*7 }}") {
+        document.getElementById("msg").innerText = "✅ 恭喜！你發現模板可被注入。真正 FLAG 是：FLAG{ssti_master}";
+        document.getElementById("msg").style.color = "#00ffcc";
+      } else if (input === "FLAG{ssti_master}") {
+        window.location.href = "win.html";
+      } else {
+        const msg = document.getElementById("msg");
+        msg.innerText = "❌ 沒有成功注入，再試試看！";
+        msg.style.color = "#ff4d9b";
+      }
+    }
+  </script>
+</body>
+</html>
