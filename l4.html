@@ -71,7 +71,7 @@
 </head>
 <body>
   <div class="terminal">
-    <h2>第四關：SSTI 模擬挑戰</h2>
+    <h2>第四關：SSTI 模擬挑戰({flag})</h2>
     <p>某個系統用了 Jinja2 模板，現在輸入被渲染在這裡：</p>
     <pre>Hello, {{ input }}</pre>
     <p>你能透過 <strong>SSTI 注入</strong> 取得 FLAG 嗎？</p>
@@ -86,7 +86,7 @@
     function check() {
       const input = document.getElementById("answer").value.trim();
       // 模擬 payload -> FLAG
-      if (input === "{{7*7}}" || input === "{{ 7*7 }}") {
+      if (input === "{{flag}}" || input === "{{flag}}") {
         document.getElementById("msg").innerText = "✅ 恭喜！你發現模板可被注入。真正 FLAG 是：FLAG{ssti_master}";
         document.getElementById("msg").style.color = "#00ffcc";
       } else if (input === "FLAG{ssti_master}") {
