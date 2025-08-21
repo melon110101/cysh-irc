@@ -113,19 +113,19 @@
     <p id="msg"></p>
   </div>
 
-  <script>
-    function check() {
-      const input = document.getElementById("answer").value.trim();
-      const correctAnswer = "melon is delicious";
+<script>
+  function check() {
+    const input = document.getElementById("answer").value.trim();
+    const correctAnswer = atob("bWVsb24gaXMgZGVsaWNpb3Vz"); // "melon is delicious"
 
-      if (input === correctAnswer) {
-        window.location.href = "level3.html";
-      } else {
-        const msg = document.getElementById("msg");
-        msg.innerText = "❌ 傻鳥一隻！";
-        msg.style.color = "#ff4d9b";
-      }
+    if (input === correctAnswer) {
+      window.location.href = "level3.html";
+    } else {
+      const msg = document.getElementById("msg");
+      msg.innerText = "❌ 傻鳥一隻！";
+      msg.style.color = "#ff4d9b";
     }
-  </script>
+  }
+</script>
 </body>
 </html>
