@@ -83,20 +83,30 @@
   </div>
 
   <script>
-    function check() {
-      const input = document.getElementById("answer").value.trim();
-      // 模擬 payload -> FLAG
-      if (input === "{{flag}}" || input === "{{flag}}") {
-        document.getElementById("msg").innerText = "✅ 恭喜！你發現模板可被注入。真正 FLAG 是：FLAG{ssti_master}";
-        document.getElementById("msg").style.color = "#00ffcc";
-      } else if (input === "FLAG{ssti_master}") {
-        window.location.href = "win.html";
-      } else {
-        const msg = document.getElementById("msg");
-        msg.innerText = "❌ 沒有成功注入，再試試看！";
-        msg.style.color = "#ff4d9b";
-      }
+  async function check() {
+    const input = document.getElementById("answer").value.trim();
+
+   
+    const flagHash = "0d7b4c019845f9c9c63a58c741efec1f18b9c9c86f702a2433656d1e414a6a94";
+
+    const encoder = new TextEncoder();
+    const data = encoder.encode(input);
+    const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const hashHex = hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
+
+    if (input.includes("{{") && input.includes("}}")) {
+      document.getElementById("msg").innerText =
+        "✅ 恭喜！你發現模板可被注入。真正 FLAG 是隱藏的，請嘗試找到它！";
+      document.getElementById("msg").style.color = "#00ffcc";
+    } else if (hashHex === flagHash) {
+      window.location.href = "win.html";
+    } else {
+      const msg = document.getElementById("msg");
+      msg.innerText = "❌ 沒有成功注入，再試試看！";
+      msg.style.color = "#ff4d9b";
     }
-  </script>
+  }
+</script>
 </body>
 </html>
