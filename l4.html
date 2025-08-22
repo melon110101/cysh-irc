@@ -97,7 +97,7 @@
 
     if (input.includes("{{") && input.includes("}}")) {
       document.getElementById("msg").innerText =
-        "✅ 恭喜！你發現模板可被注入。真正 FLAG 是隱藏的，請嘗試找到它！";
+        "✅ 恭喜！你發現模板可被注入。真正 FLAG 是 FLAG{ssti_master} ！";
       document.getElementById("msg").style.color = "#00ffcc";
     } else if (hashHex === flagHash) {
       window.location.href = "win.html";
