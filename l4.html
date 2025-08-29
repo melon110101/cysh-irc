@@ -84,72 +84,61 @@
     <p id="msg"></p>
   </div>
 
-  <script>
-  function check() {
-    const input = document.getElementById("answer").value.trim();
+<script>
+function check() {
+  const input = document.getElementById("answer").value.trim();
 
-    if (input.includes("{{") && input.includes("}}")) {
-      const overlay = document.createElement("div");
-      overlay.style.position = "fixed";
-      overlay.style.top = "0";
-      overlay.style.left = "0";
-      overlay.style.width = "100%";
-      overlay.style.height = "100%";
-      overlay.style.background = "radial-gradient(circle, #ff4d9b, #2a003f)";
-      overlay.style.display = "flex";
-      overlay.style.alignItems = "center";
-      overlay.style.justifyContent = "center";
-      overlay.style.fontSize = "2rem";
-      overlay.style.color = "#fff";
-      overlay.style.zIndex = "9999";
-      overlay.innerText = "🚀 FLAG 傳送中...";
+  if (input.includes("{{") && input.includes("}}")) {
+    const overlay = document.createElement("div");
+    overlay.style.position = "fixed";
+    overlay.style.top = "0";
+    overlay.style.left = "0";
+    overlay.style.width = "100%";
+    overlay.style.height = "100%";
+    overlay.style.background = "rgba(0,0,0,0.7)";
+    overlay.style.display = "flex";
+    overlay.style.alignItems = "center";
+    overlay.style.justifyContent = "center";
+    overlay.style.fontSize = "2rem";
+    overlay.style.color = "#fff";
+    overlay.style.zIndex = "9999";
+    overlay.innerText = "🚀 FLAG 傳送中...";
 
-      document.body.appendChild(overlay);
+    document.body.appendChild(overlay);
 
-      // 閃光動畫
-      overlay.animate([
-        { opacity: 0 },
-        { opacity: 1 },
-        { opacity: 0.6 },
-        { opacity: 1 }
+    // 產生彩帶 confetti
+    for (let i = 0; i < 40; i++) {
+      const confetti = document.createElement("div");
+      confetti.style.position = "fixed";
+      confetti.style.width = "10px";
+      confetti.style.height = "10px";
+      confetti.style.backgroundColor = ["#ff4d9b", "#00ffcc", "#ffb3dc", "#fff"][Math.floor(Math.random()*4)];
+      confetti.style.top = "-10px";
+      confetti.style.left = Math.random() * window.innerWidth + "px";
+      confetti.style.opacity = Math.random();
+      confetti.style.borderRadius = "50%";
+      confetti.animate([
+        { transform: `translateY(0) rotate(0deg)` },
+        { transform: `translateY(${window.innerHeight + 50}px) rotate(720deg)` }
       ], {
-        duration: 800,
-        iterations: 2
+        duration: 2000 + Math.random()*2000,
+        iterations: 1,
+        easing: "linear"
       });
-
-      // 彩帶 confetti 動畫
-      for (let i = 0; i < 40; i++) {
-        const confetti = document.createElement("div");
-        confetti.style.position = "fixed";
-        confetti.style.width = "10px";
-        confetti.style.height = "10px";
-        confetti.style.backgroundColor = ["#ff4d9b", "#00ffcc", "#ffb3dc", "#fff"][Math.floor(Math.random()*4)];
-        confetti.style.top = "-10px";
-        confetti.style.left = Math.random() * window.innerWidth + "px";
-        confetti.style.opacity = Math.random();
-        confetti.style.borderRadius = "50%";
-        confetti.animate([
-          { transform: `translateY(0) rotate(0deg)` },
-          { transform: `translateY(${window.innerHeight + 50}px) rotate(720deg)` }
-        ], {
-          duration: 2000 + Math.random()*2000,
-          iterations: 1,
-          easing: "linear"
-        });
-        document.body.appendChild(confetti);
-      }
-
-      // 1.5 秒後跳轉
-      setTimeout(() => {
-        window.location.href = "win.html";
-      }, 1500);
-
-    } else {
-      const msg = document.getElementById("msg");
-      msg.innerText = "❌ 沒有成功注入，再試試看！";
-      msg.style.color = "#ff4d9b";
+      document.body.appendChild(confetti);
     }
+
+    // 1.5 秒後跳轉到 win.html
+    setTimeout(() => {
+      window.location.href = "win.html";
+    }, 1500);
+
+  } else {
+    const msg = document.getElementById("msg");
+    msg.innerText = "❌ 沒有成功注入，再試試看！";
+    msg.style.color = "#ff4d9b";
   }
-  </script>
+}
+</script>
 </body>
 </html>
