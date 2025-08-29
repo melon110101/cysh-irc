@@ -1,172 +1,100 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8">
   <title>第四關：SSTI 模擬挑戰</title>
   <style>
-    :root {
-      --bg1: #2a003f;
-      --bg2: #ff4d9b;
-      --panel: rgba(40, 0, 60, 0.95);
-      --ink: #ff9ad5;
-      --ink-strong: #fff;
-      --accent: #ff4d9b;
-      --accent-2: #00ffcc;
-      --border: #ff4d9b;
-    }
-    html, body { height: 100%; }
     body {
-      margin: 0; padding: 2rem; min-height: 100%;
+      margin: 0; padding: 2rem;
+      height: 100vh;
       display: flex; justify-content: center; align-items: center;
-      background: linear-gradient(135deg, var(--bg1), var(--bg2));
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      color: var(--ink);
+      background: linear-gradient(135deg, #2a003f, #ff4d9b);
+      font-family: 'Fira Code', monospace;
+      color: #ff9ad5;
     }
+
     .terminal {
-      background: var(--panel);
-      border: 2px solid var(--border);
-      box-shadow: 0 0 25px var(--accent);
-      border-radius: 14px;
-      padding: clamp(1rem, 2.5vw, 2rem);
-      width: min(720px, 96vw);
+      background: rgba(40, 0, 60, 0.95);
+      border: 2px solid #ff4d9b;
+      box-shadow: 0 0 25px #ff4d9b;
+      border-radius: 12px;
+      padding: 2rem;
+      max-width: 650px;
+      width: 100%;
       text-align: center;
     }
-    h2 { color: var(--ink-strong); text-shadow: 0 0 10px #ff9ad5; margin-top: 0; }
-    p { margin: 0.25rem 0 0.75rem; }
+
+    h2 { color: #fff; text-shadow: 0 0 10px #ff9ad5; }
+
     pre {
       background: #1a001f;
       padding: 1rem;
-      border-radius: 10px;
-      border: 1px solid var(--border);
+      border-radius: 6px;
+      border: 1px solid #ff4d9b;
       color: #ffb3dc;
-      font-size: 1.05rem;
+      font-size: 1.1rem;
       user-select: all;
       text-align: left;
-      overflow: auto;
     }
-    .row { display: grid; gap: 0.5rem; justify-items: center; }
-    input[type="text"] {
+
+    input {
+      margin-top: 1rem;
       background-color: #2a003f;
-      border: 1px solid var(--border);
+      border: 1px solid #ff4d9b;
       color: #fff;
-      padding: 0.65rem 0.8rem;
-      border-radius: 8px;
-      width: min(520px, 92vw);
+      padding: 0.6rem;
+      border-radius: 6px;
+      width: 320px;
       font-size: 1rem;
     }
+
     button {
-      background-color: var(--accent);
+      margin-top: 1rem;
+      background-color: #ff4d9b;
       border: none;
       color: white;
-      padding: 0.55rem 1rem;
-      font-weight: 700;
-      border-radius: 8px;
+      padding: 0.5rem 1rem;
+      font-weight: bold;
+      border-radius: 6px;
       cursor: pointer;
-      box-shadow: 0 0 10px var(--accent);
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      box-shadow: 0 0 10px #ff4d9b;
+      transition: transform 0.2s;
     }
-    button:hover { transform: translateY(-1px) scale(1.03); box-shadow: 0 0 18px var(--accent); }
-    #msg { margin-top: 0.75rem; font-weight: bold; min-height: 1.5em; }
-    .hint { font-size: 0.95rem; opacity: 0.9; }
-    .badge {
-      display: inline-block; margin-left: 0.4rem; padding: 0.2rem 0.5rem;
-      border: 1px dashed var(--accent); border-radius: 999px; font-size: 0.8rem; color: #ffd9ec;
+
+    button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px #ff4d9b;
     }
-    details {
-      margin-top: 0.6rem; text-align: left; background:#230131; border:1px solid #6a0b49; border-radius: 8px; padding: 0.6rem 0.8rem;
-    }
-    summary { cursor: pointer; color:#ffd3e8; }
-    .render-box { margin-top: 0.75rem; text-align:left; background:#120017; border:1px solid #5a0a41; border-radius:10px; padding:0.75rem; }
-    .dim { opacity: 0.8; font-size: 0.95rem; }
+
+    #msg { margin-top: 1rem; font-weight: bold; }
   </style>
 </head>
 <body>
   <div class="terminal">
-    <h2>第四關：SSTI 模擬挑戰 <span class="badge">client-side</span></h2>
-    <p>某個系統用了 <strong>Jinja2</strong> 模板，現在輸入被渲染在這裡：</p>
+    <h2>第四關：SSTI 模擬挑戰({flag})</h2>
+    <p>某個系統用了 Jinja2 模板，現在輸入被渲染在這裡：</p>
+    <pre>Hello, {{ input }}</pre>
+    <p>你能透過 <strong>SSTI 注入</strong> 取得 FLAG 嗎？</p>
 
-    <pre id="tpl">Hello, {{ input }}</pre>
-
-    <div class="row">
-      <input type="text" id="answer" placeholder="輸入 Payload，例如：{{7*7}}" />
-      <button id="btn">送出</button>
-      <p id="msg"></p>
-    </div>
-
-    <div id="render" class="render-box" hidden>
-      <div class="dim">（模擬渲染結果，不會真的執行伺服器上的 Jinja2）</div>
-      <div id="renderOut"></div>
-    </div>
-
-    <details>
-      <summary>提示 / Hints</summary>
-      <ul>
-        <li>先嘗試偵測：輸入是否含 <code>{{ ... }}</code>。</li>
-        <li>像是 <code>{{7*7}}</code> 這種表達式，若真的在 Jinja2 中，會被算出數值。</li>
-        <li>本關使用前端檢查來模擬 SSTI 情境，避免真的在伺服器上執行危險指令。</li>
-      </ul>
-    </details>
+    <input type="text" id="answer" placeholder="輸入 Payload..." />
+    <br />
+    <button onclick="check()">送出</button>
+    <p id="msg"></p>
   </div>
 
   <script>
-    // === 關卡設定 ===
-    const FLAG = "FLAG{ssti_master}"; // 顯示用旗標
-    // 可自行更換下列雜湊（以 SHA-256(input) 比對，對到就導向 win.html）
-    const FLAG_HASH = "0d7b4c019845f9c9c63a58c741efec1f18b9c9c86f702a2433656d1e414a6a94";
+  function check() {
+    const input = document.getElementById("answer").value.trim();
 
-    const $ = (s) => document.querySelector(s);
-    const byId = (id) => document.getElementById(id);
-    const input = byId("answer");
-    const msg = byId("msg");
-    const btn = byId("btn");
-
-    // 小工具：安全字串化（避免在 DOM 注入）
-    const esc = (s) => s
-      .replaceAll(/&/g, "&amp;")
-      .replaceAll(/</g, "&lt;")
-      .replaceAll(/>/g, "&gt;");
-
-    // 非真正模板引擎，只做 very-light 規則：把 Hello, {{ input }} 替換為 Hello, <使用者輸入>
-    function fakeRender(userInput) {
-      const tpl = byId("tpl").textContent;
-      return esc(tpl).replace("{{ input }}", `<span style="color:#fff">${esc(userInput)}</span>`);
+    if (input.includes("{{") && input.includes("}}")) {
+      // 成功注入 → 跳轉 win.html
+      window.location.href = "win.html";
+    } else {
+      const msg = document.getElementById("msg");
+      msg.innerText = "❌ 沒有成功注入，再試試看！";
+      msg.style.color = "#ff4d9b";
     }
-
-    async function sha256Hex(str) {
-      const buf = new TextEncoder().encode(str);
-      const digest = await crypto.subtle.digest("SHA-256", buf);
-      return Array.from(new Uint8Array(digest)).map(b => b.toString(16).padStart(2, "0")).join("");
-    }
-
-    async function check() {
-      const value = input.value.trim();
-      const hasBraces = value.includes("{{") && value.includes("}}");
-
-      // 顯示模擬渲染（純置換，不求值）
-      const out = fakeRender(value);
-      byId("renderOut").innerHTML = out;
-      byId("render").hidden = false;
-
-      if (hasBraces) {
-        msg.textContent = `✅ 恭喜！你發現模板可被注入。真正 FLAG 是：${FLAG}`;
-        msg.style.color = "var(--accent-2)";
-        return;
-      }
-
-      const h = await sha256Hex(value);
-      if (h === FLAG_HASH) {
-        // 二階段彩蛋：若輸入剛好對上指定雜湊，導向 win.html
-        window.location.href = "win.html";
-        return;
-      }
-
-      msg.textContent = "❌ 沒有成功注入，再試試看！";
-      msg.style.color = "var(--accent)";
-    }
-
-    btn.addEventListener("click", check);
-    input.addEventListener("keydown", (e) => { if (e.key === "Enter") check(); });
+  }
   </script>
 </body>
 </html>
