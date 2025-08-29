@@ -11,6 +11,7 @@
       background: linear-gradient(135deg, #2a003f, #ff4d9b);
       font-family: 'Fira Code', monospace;
       color: #ff9ad5;
+      overflow: hidden;
     }
 
     .terminal {
@@ -22,6 +23,7 @@
       max-width: 650px;
       width: 100%;
       text-align: center;
+      z-index: 1;
     }
 
     h2 { color: #fff; text-shadow: 0 0 10px #ff9ad5; }
@@ -71,7 +73,7 @@
 </head>
 <body>
   <div class="terminal">
-    <h2>第四關：SSTI 模擬挑戰({flag})</h2>
+    <h2>第四關：SSTI 模擬挑戰</h2>
     <p>某個系統用了 Jinja2 模板，現在輸入被渲染在這裡：</p>
     <pre>Hello, {{ input }}</pre>
     <p>你能透過 <strong>SSTI 注入</strong> 取得 FLAG 嗎？</p>
@@ -87,8 +89,61 @@
     const input = document.getElementById("answer").value.trim();
 
     if (input.includes("{{") && input.includes("}}")) {
-      // 成功注入 → 跳轉 win.html
-      window.location.href = "win.html";
+      const overlay = document.createElement("div");
+      overlay.style.position = "fixed";
+      overlay.style.top = "0";
+      overlay.style.left = "0";
+      overlay.style.width = "100%";
+      overlay.style.height = "100%";
+      overlay.style.background = "radial-gradient(circle, #ff4d9b, #2a003f)";
+      overlay.style.display = "flex";
+      overlay.style.alignItems = "center";
+      overlay.style.justifyContent = "center";
+      overlay.style.fontSize = "2rem";
+      overlay.style.color = "#fff";
+      overlay.style.zIndex = "9999";
+      overlay.innerText = "🚀 FLAG 傳送中...";
+
+      document.body.appendChild(overlay);
+
+      // 閃光動畫
+      overlay.animate([
+        { opacity: 0 },
+        { opacity: 1 },
+        { opacity: 0.6 },
+        { opacity: 1 }
+      ], {
+        duration: 800,
+        iterations: 2
+      });
+
+      // 彩帶 confetti 動畫
+      for (let i = 0; i < 40; i++) {
+        const confetti = document.createElement("div");
+        confetti.style.position = "fixed";
+        confetti.style.width = "10px";
+        confetti.style.height = "10px";
+        confetti.style.backgroundColor = ["#ff4d9b", "#00ffcc", "#ffb3dc", "#fff"][Math.floor(Math.random()*4)];
+        confetti.style.top = "-10px";
+        confetti.style.left = Math.random() * window.innerWidth + "px";
+        confetti.style.opacity = Math.random();
+        confetti.style.borderRadius = "50%";
+        confetti.animate([
+          { transform: `translateY(0) rotate(0deg)` },
+          { transform: `translateY(${window.innerHeight + 50}px) rotate(720deg)` }
+        ], {
+          duration: 2000 + Math.random()*2000,
+          iterations: 1,
+          easing: "linear"
+        });
+        document.body.appendChild(confetti);
+      }
+
+      // 1.5 秒後跳轉
+      setTimeout(() => {
+        window.location.href = "win.html";
+      }, 1500);
+
     } else {
       const msg = document.getElementById("msg");
       msg.innerText = "❌ 沒有成功注入，再試試看！";
