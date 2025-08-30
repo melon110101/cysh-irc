@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <title>神奇哈密瓜 - Level 1</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fira+Code&display=swap');
+
+    body {
+      margin: 0; padding: 2rem;
+      height: 100vh;
+      display: flex; justify-content: center; align-items: center;
+      background: linear-gradient(135deg, #1a002f, #ff007a);
+      font-family: 'Fira Code', monospace;
+      color: #ffaadf;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* 背景發光層 */
+    body::before {
+      content: "";
+      position: absolute;
+      top: -50%; left: -50%;
+      width: 200%; height: 200%;
+      background: radial-gradient(circle at center, #ff007a, #1a002f 70%);
+      animation: pulseBg 8s ease-in-out infinite alternate;
+      z-index: 0;
+      filter: blur(90px);
+      opacity: 0.6;
+    }
+
+    @keyframes pulseBg {
+      0% { transform: scale(1) rotate(0deg); opacity: 0.6; }
+      100% { transform: scale(1.15) rotate(15deg); opacity: 0.85; }
+    }
+
+    /* === 背景流動字 === */
+    .matrix-bg {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      overflow: hidden;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .matrix-char {
+      position: absolute;
+      top: -10%;
+      animation: fall linear infinite, neonColor 6s linear infinite;
+      text-shadow: 0 0 8px #ff4db2;
+      opacity: 0.7;
+      font-weight: bold;
+    }
+    @keyframes fall {
+      0% { top: -10%; opacity: 0; }
+      10% { opacity: 1; }
+      100% { top: 110%; opacity: 0; }
+    }
+    @keyframes neonColor {
+      0%   { color: #ff4db2; text-shadow: 0 0 8px #ff4db2; }
+      33%  { color: #9d4dff; text-shadow: 0 0 8px #9d4dff; }
+      66%  { color: #00ffe7; text-shadow: 0 0 8px #00ffe7; }
+      100% { color: #ff4db2; text-shadow: 0 0 8px #ff4db2; }
+    }
+
+    /* 前景終端機 */
+    .terminal {
+      position: relative;
+      z-index: 1;
+      background: rgba(25, 0, 40, 0.9);
+      border: 2px solid #ff4db2;
+      box-shadow: 0 0 25px #ff4db2;
+      border-radius: 12px;
+      padding: 2rem;
+      max-width: 700px;
+      width: 100%;
+      white-space: pre-line;
+      min-height: 260px;
+      overflow-wrap: break-word;
+      text-align: left;
+    }
+
+    #output {
+      line-height: 1.6;
+      letter-spacing: 0.07em;
+      text-shadow: 0 0 5px #ffaadf;
+      user-select: none;
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 14px;
+      height: 28px;
+      background-color: #ff4db2;
+      border-radius: 3px;
+      filter: drop-shadow(0 0 6px #ff4db2);
+      animation: blink 1s steps(2, start) infinite;
+      vertical-align: bottom;
+      margin-left: 6px;
+    }
+
+    @keyframes blink {
+      0%, 50% { opacity: 1; }
+      51%, 100% { opacity: 0; }
+    }
+
+    /* cyber melon */
+    .melon {
+      position: absolute;
+      bottom: 25px;
+      right: 25px;
+      width: 90px;
+      height: 90px;
+      background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Charentais_melon.jpg/240px-Charentais_melon.jpg');
+      background-size: cover;
+      border-radius: 50%;
+      box-shadow: 0 0 15px #ff4db2;
+      animation: float 3s infinite ease-in-out;
+      z-index: 2;
+    }
+
+    @keyframes float {
+      0%   { transform: translateY(0); }
+      50%  { transform: translateY(-20px) rotate(5deg); }
+      100% { transform: translateY(0); }
+    }
+
+    #nextBtn {
+      margin-top: 2rem;
+      padding: 0.9rem 1.8rem;
+      font-size: 1rem;
+      font-family: 'Fira Code', monospace;
+      color: #fff;
+      background: #ff4db2;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 0 15px #ff4db2;
+      display: none;
+      transition: all 0.2s;
+    }
+
+    #nextBtn:hover {
+      transform: scale(1.07);
+      box-shadow: 0 0 25px #ff4db2;
+    }
+  </style>
+</head>
+<body>
+  <!-- 背景流動字 -->
+  <div class="matrix-bg"></div>
+
+  <div class="terminal">
+    <div id="output"></div><span class="cursor"></span>
+    <button id="nextBtn" onclick="window.location.href='level2.html'">▶ 前往下一關</button>
+  </div>
+  <div class="melon" title="🍈 神秘哈密瓜"></div>
+
+  <script>
+    // === 打字效果 ===
+    const lines = [
+      "[LEVEL 1] 啟動中...",
+      "正在讀取挑戰資料...",
+      "建立加密通道 ✔",
+      "連接到『哈密瓜核心』...",
+      "驗證身份：哈密瓜探險者",
+      "加載任務中...",
+      ">> 任務已解鎖，請準備前進！"
+    ];
+
+    const output = document.getElementById("output");
+    const btn = document.getElementById("nextBtn");
+    let i = 0, j = 0;
+    const speed = 55;
+
+    function typeLine() {
+      if (i < lines.length) {
+        if (j < lines[i].length) {
+          output.innerHTML += lines[i].charAt(j);
+          j++;
+          setTimeout(typeLine, speed);
+        } else {
+          output.innerHTML += "\n";
+          i++;
+          j = 0;
+          setTimeout(typeLine, 600);
+        }
+      } else {
+        btn.style.display = "inline-block";
+      }
+    }
+    typeLine();
+
+    // === 生成背景流動字 ===
+    function createMatrixRain() {
+      const matrixBg = document.querySelector('.matrix-bg');
+      const chars = '01哈密瓜☆★◆◇※◎⊙☾☼';
+      for (let i = 0; i < 70; i++) {
+        const char = document.createElement('div');
+        char.className = 'matrix-char';
+        char.textContent = chars[Math.floor(Math.random() * chars.length)];
+        char.style.left = Math.random() * 100 + '%';
+        char.style.fontSize = (Math.random() * 20 + 12) + 'px'; // 隨機大小 12px ~ 32px
+        char.style.animationDelay = Math.random() * 8 + 's';
+        char.style.animationDuration = (Math.random() * 8 + 5) + 's';
+        matrixBg.appendChild(char);
+      }
+    }
+    createMatrixRain();
+  </script>
+</body>
+</html>
