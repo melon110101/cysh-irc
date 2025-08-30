@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8" />
-  <title>神奇哈密瓜 - Level 1</title>
+  <title>神奇哈密瓜</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Fira+Code&display=swap');
 
@@ -17,7 +17,6 @@
       position: relative;
     }
 
-    /* 背景發光層 */
     body::before {
       content: "";
       position: absolute;
@@ -153,7 +152,7 @@
 
   <div class="terminal">
     <div id="output"></div><span class="cursor"></span>
-    <button id="nextBtn" onclick="window.location.href='level2.html'">▶ 前往下一關</button>
+    <button id="nextBtn" onclick="window.location.href='level1.html'">▶ 確定要按嗎?</button>
   </div>
   <div class="melon" title="🍈 神秘哈密瓜"></div>
 
@@ -164,9 +163,9 @@
       "正在讀取挑戰資料...",
       "建立加密通道 ✔",
       "連接到『哈密瓜核心』...",
-      "驗證身份：哈密瓜探險者",
+      "驗證身份：資訊小白",
       "加載任務中...",
-      ">> 任務已解鎖，請準備前進！"
+      ">> 任務已解鎖，副社好帥！"
     ];
 
     const output = document.getElementById("output");
@@ -195,7 +194,7 @@
     // === 生成背景流動字 ===
     function createMatrixRain() {
       const matrixBg = document.querySelector('.matrix-bg');
-      const chars = '01哈密瓜☆★◆◇※◎⊙☾☼';
+      const chars = '哈密瓜';
       for (let i = 0; i < 70; i++) {
         const char = document.createElement('div');
         char.className = 'matrix-char';
